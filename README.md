@@ -146,6 +146,14 @@ Each feature is developed in its own branch, merged into `develop`, and finally 
 
 ---
 
+## Time Zone
+
+All timestamps are stored in UTC and displayed in Indian Standard Time (IST).
+
+Time Zone: Asia/Kolkata (UTC +05:30)
+
+---
+
 ## 👨‍💻 Author
 
 **Rohan Kadu**
