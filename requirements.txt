@@ -22,7 +22,10 @@ debugpy==1.8.20
 decorator==5.2.1
 defusedxml==0.7.1
 Django==6.0.3
+django-cors-headers==4.9.0
+django-filter==25.2
 djangorestframework==3.17.1
+djangorestframework_simplejwt==5.5.1
 drf-spectacular==0.29.0
 et_xmlfile==2.0.0
 executing==2.2.1
@@ -88,6 +91,7 @@ psycopg-binary==3.3.4
 pure_eval==0.2.3
 pycparser==3.0
 Pygments==2.19.2
+PyJWT==2.13.0
 pyparsing==3.3.2
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.2
