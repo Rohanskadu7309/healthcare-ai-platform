@@ -1,0 +1,67 @@
+import re
+
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.contrib.auth.password_validation import validate_password
+
+from rest_framework import serializers
+
+User = get_user_model()
+
+class RegistrationValidator:
+
+    @staticmethod
+    def validate_password(password: str):
+
+        if len(password) < 8:
+            raise serializers.ValidationError(
+                "Password must contain at least 8 characters."
+            )
+
+        if not re.search(r"[A-Z]", password):
+            raise serializers.ValidationError(
+                "Password must contain one uppercase letter."
+            )
+
+        if not re.search(r"[a-z]", password):
+            raise serializers.ValidationError(
+                "Password must contain one lowercase letter."
+            )
+
+        if not re.search(r"\d", password):
+            raise serializers.ValidationError(
+                "Password must contain one number."
+            )
+
+        if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+            raise serializers.ValidationError(
+                "Password must contain one special character."
+            )
+
+        return password
+    
+
+def validate_user_email(email):
+    """
+    Validate email format and uniqueness.
+    """
+    validate_email(email)
+
+    if User.objects.filter(email__iexact=email).exists():
+        raise ValidationError("A user with this email already exists.")
+    
+
+def validate_user_password(password):
+    """
+    Validate password using Django's built-in validators.
+    """
+    validate_password(password)
+    
+
+def validate_confirm_password(password, confirm_password):
+    """
+    Ensure password and confirm password match.
+    """
+    if password != confirm_password:
+        raise ValidationError("Passwords do not match.")
