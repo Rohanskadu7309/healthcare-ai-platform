@@ -1,39 +1,27 @@
 from rest_framework import serializers
 
 from .models import User
-from .validators import RegistrationValidator
-
+from .validators import RegistrationValidator, validate_user_email, validate_user_password, validate_confirm_password
 
 class RegisterSerializer(serializers.Serializer):
 
-    first_name = serializers.CharField(max_length=100)
-    last_name = serializers.CharField(max_length=100)
+    first_name = serializers.CharField(required=False, allow_blank=True, max_length=100,)
+    last_name = serializers.CharField(required=False, allow_blank=True, max_length=100,)
     email = serializers.EmailField()
-    password = serializers.CharField(write_only=True)
-    confirm_password = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True, min_length=8,)
+    confirm_password = serializers.CharField(write_only=True, min_length=8,)
 
     def validate_email(self, value):
-
-        value = value.lower()
-
-        if User.objects.filter(email=value).exists():
-            raise serializers.ValidationError(
-                "Email already exists."
-            )
-
-        return value
+        validate_user_email(value)
+        return value.lower()
 
     def validate_password(self, value):
-
-        return RegistrationValidator.validate_password(value)
+        validate_user_password(value)
+        return value
 
     def validate(self, attrs):
-
-        if attrs["password"] != attrs["confirm_password"]:
-            raise serializers.ValidationError(
-                {
-                    "confirm_password": "Passwords do not match."
-                }
-            )
-
+        validate_confirm_password(
+            attrs["password"],
+            attrs["confirm_password"],
+        )
         return attrs

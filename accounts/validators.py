@@ -1,7 +1,13 @@
 import re
 
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.contrib.auth.password_validation import validate_password
+
 from rest_framework import serializers
 
+User = get_user_model()
 
 class RegistrationValidator:
 
@@ -34,3 +40,28 @@ class RegistrationValidator:
             )
 
         return password
+    
+
+def validate_user_email(email):
+    """
+    Validate email format and uniqueness.
+    """
+    validate_email(email)
+
+    if User.objects.filter(email__iexact=email).exists():
+        raise ValidationError("A user with this email already exists.")
+    
+
+def validate_user_password(password):
+    """
+    Validate password using Django's built-in validators.
+    """
+    validate_password(password)
+    
+
+def validate_confirm_password(password, confirm_password):
+    """
+    Ensure password and confirm password match.
+    """
+    if password != confirm_password:
+        raise ValidationError("Passwords do not match.")

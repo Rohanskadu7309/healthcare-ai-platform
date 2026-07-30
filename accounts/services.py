@@ -1,7 +1,9 @@
-from .models import User
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
-class AuthenticationService:
+class RegistrationService:
 
     @staticmethod
     def register(validated_data):
@@ -12,7 +14,7 @@ class AuthenticationService:
 
         user = User.objects.create_user(
             password=password,
-            **validated_data
+            **validated_data,
         )
 
         return user
