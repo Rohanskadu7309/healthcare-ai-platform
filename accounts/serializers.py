@@ -35,5 +35,5 @@ class LoginSerializer(serializers.Serializer):
         return value.lower()
     
 
-class RefrshTokenSerializer(serializers.Serializer):
+class RefreshTokenSerializer(serializers.Serializer):
     refresh = serializers.CharField()

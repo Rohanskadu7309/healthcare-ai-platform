@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
-from .serializers import RegisterSerializer, LoginSerializer, RefrshTokenSerializer
+from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer
 from .services import RegistrationService, LoginService, RefreshTokenService
 
 
@@ -98,15 +98,15 @@ class RefreshTokenAPIView(APIView):
     permission_classes = []
     
     @extend_schema(
-        request=RegisterSerializer,
+        request=RefreshTokenSerializer,
         responses={
-            201: OpenApiResponse(description="User registered successfully."),
-            400: OpenApiResponse(description="Validation Error"),
+            200: OpenApiResponse(description="Access token refreshed successfully."),
+            400: OpenApiResponse(description="Invalid or expired refresh token."),
         },
     )
     
     def post(self, request):
-        serializer = RefrshTokenSerializer(data=request.data)
+        serializer = RefreshTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
         try:
