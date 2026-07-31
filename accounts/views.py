@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
-from .serializers import RegisterSerializer, LoginSerializer
-from .services import RegistrationService, LoginService
+from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer
+from .services import RegistrationService, LoginService, RefreshTokenService
 
 
 class RegisterAPIView(APIView):
@@ -13,6 +13,7 @@ class RegisterAPIView(APIView):
     permission_classes = []
     
     @extend_schema(
+        tags=["Authentication"],
         request=RegisterSerializer,
         responses={
             201: OpenApiResponse(description="User registered successfully."),
@@ -51,6 +52,7 @@ class LoginAPIView(APIView):
     permission_classes = []
 
     @extend_schema(
+        tags=["Authentication"],
         request=LoginSerializer,
         responses={
             200: OpenApiResponse(description="Login successful."),
@@ -87,6 +89,47 @@ class LoginAPIView(APIView):
                         "last_name": result["user"].last_name,
                     },
                 },
+            },
+            status=status.HTTP_200_OK,
+        )
+        
+
+class RefreshTokenAPIView(APIView):
+    
+    authentication_classes = []
+    permission_classes = []
+    
+    @extend_schema(
+        tags=["Authentication"],
+        request=RefreshTokenSerializer,
+        responses={
+            200: OpenApiResponse(description="Access token refreshed successfully."),
+            400: OpenApiResponse(description="Invalid or expired refresh token."),
+        },
+    )
+    
+    def post(self, request):
+        serializer = RefreshTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        try:
+            result = RefreshTokenService.refresh(serializer.validated_data)
+            
+        except ValueError as e:
+
+            return Response(
+                {
+                    "success": False,
+                    "message": str(e),
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        return Response(
+            {
+                "success": True,
+                "message": "Access token refreshed successfully.",
+                "data": result,
             },
             status=status.HTTP_200_OK,
         )
