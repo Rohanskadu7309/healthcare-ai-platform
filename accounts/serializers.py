@@ -33,3 +33,7 @@ class LoginSerializer(serializers.Serializer):
     
     def validate_email(self, value):
         return value.lower()
+    
+
+class RefrshTokenSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
