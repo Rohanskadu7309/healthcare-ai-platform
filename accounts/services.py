@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
 
 User = get_user_model()
 
@@ -44,3 +45,20 @@ class LoginService:
             "refresh": str(refresh),
             "user": user,
         }
+        
+
+class RefreshTokenService:
+    
+    @staticmethod
+    def refresh(validated_data):
+        
+        try:
+            refresh = RefreshToken(validated_data["refresh"])
+            access = str(refresh.access_token)
+            
+            return {
+                "access": access
+            }
+            
+        except TokenError:
+            raise ValueError("Invalid or expired refresh token.")
