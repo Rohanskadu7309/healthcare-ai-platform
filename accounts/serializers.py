@@ -25,3 +25,11 @@ class RegisterSerializer(serializers.Serializer):
             attrs["confirm_password"],
         )
         return attrs
+    
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+    
+    def validate_email(self, value):
+        return value.lower()
