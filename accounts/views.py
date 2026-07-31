@@ -13,6 +13,7 @@ class RegisterAPIView(APIView):
     permission_classes = []
     
     @extend_schema(
+        tags=["Authentication"],
         request=RegisterSerializer,
         responses={
             201: OpenApiResponse(description="User registered successfully."),
@@ -51,6 +52,7 @@ class LoginAPIView(APIView):
     permission_classes = []
 
     @extend_schema(
+        tags=["Authentication"],
         request=LoginSerializer,
         responses={
             200: OpenApiResponse(description="Login successful."),
@@ -98,6 +100,7 @@ class RefreshTokenAPIView(APIView):
     permission_classes = []
     
     @extend_schema(
+        tags=["Authentication"],
         request=RefreshTokenSerializer,
         responses={
             200: OpenApiResponse(description="Access token refreshed successfully."),
