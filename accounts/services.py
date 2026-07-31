@@ -61,4 +61,20 @@ class RefreshTokenService:
             }
             
         except TokenError:
+            
+            raise ValueError("Invalid or expired refresh token.")
+        
+
+class LogoutService:
+    
+    @staticmethod
+    def logout(validated_data):
+        
+        try:
+            token = RefreshToken(validated_data["refresh"])
+            
+            token.blacklist()
+            
+        except TokenError:
+            
             raise ValueError("Invalid or expired refresh token.")
