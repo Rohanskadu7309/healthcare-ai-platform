@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
-from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer
-from .services import RegistrationService, LoginService, RefreshTokenService
+from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer, LogoutSerializer
+from .services import RegistrationService, LoginService, RefreshTokenService, LogoutService
 
 
 class RegisterAPIView(APIView):
@@ -109,6 +109,7 @@ class RefreshTokenAPIView(APIView):
     )
     
     def post(self, request):
+        
         serializer = RefreshTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
@@ -133,3 +134,44 @@ class RefreshTokenAPIView(APIView):
             },
             status=status.HTTP_200_OK,
         )
+        
+
+class LogoutAPIVew(APIView):
+    
+    authentication_classes = []
+    permission_classes = []
+    
+    @extend_schema(
+        tags=["Authentication"],
+        request=LogoutSerializer,
+        responses={
+            200: OpenApiResponse(description="Logout successful."),
+            400: OpenApiResponse(description="Validation error")
+        }
+    )
+    
+    def post(self, request):
+        
+        serializer = LogoutSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        try:
+            LogoutService.logout(serializer.validated_data)
+            
+        except ValueError as e:
+            
+            return Response(
+                {
+                    "success": False,
+                    "message": str(e),
+                },
+               
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        
+        return Response(
+            {
+                "success": True,
+                "message": "Logout successful."
+            }
+        )  
