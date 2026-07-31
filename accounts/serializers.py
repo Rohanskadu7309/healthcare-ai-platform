@@ -28,6 +28,7 @@ class RegisterSerializer(serializers.Serializer):
     
 
 class LoginSerializer(serializers.Serializer):
+    
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
     
@@ -36,4 +37,10 @@ class LoginSerializer(serializers.Serializer):
     
 
 class RefreshTokenSerializer(serializers.Serializer):
+    
+    refresh = serializers.CharField()
+    
+
+class LogoutSerializer(serializers.Serializer):
+    
     refresh = serializers.CharField()
