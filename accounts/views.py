@@ -15,12 +15,8 @@ class RegisterAPIView(APIView):
     @extend_schema(
         request=RegisterSerializer,
         responses={
-            201: OpenApiResponse(
-                description="User registered successfully."
-            ),
-            400: OpenApiResponse(
-                description="Validation Error"
-            ),
+            201: OpenApiResponse(description="User registered successfully."),
+            400: OpenApiResponse(description="Validation Error"),
         },
     )
     
