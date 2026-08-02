@@ -68,3 +68,21 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
     
     def validate_last_name(self, value):
         return value.strip()
+    
+
+class ChangePasswordSerializer(serializers.Serializer):
+    
+    old_password = serializers.CharField(write_only=True, min_length=8)
+    new_password = serializers.CharField(write_only=True, min_length=8)
+    confirm_new_password = serializers.CharField(write_only=True, min_length=8)
+
+    def validate_new_password(self, value):
+        validate_user_password(value)
+        return value
+
+    def validate(self, attrs):
+        validate_confirm_password(
+            attrs["new_password"],
+            attrs["confirm_new_password"],
+        )
+        return attrs
