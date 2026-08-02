@@ -86,3 +86,13 @@ class ProfileService:
     def get_profile(user):
         
         return user
+    
+    @staticmethod
+    def update_profile(user, validated_data):
+        
+        user.first_name = validated_data.get("first_name", user.first_name)
+        user.last_name = validated_data.get("last_name", user.last_name)
+        
+        user.save(update_fields=["first_name", "last_name"])
+        
+        return user
