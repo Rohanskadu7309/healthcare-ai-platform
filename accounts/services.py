@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_simplejwt.exceptions import TokenError, AuthenticationFailed
 
 User = get_user_model()
 
@@ -36,8 +36,8 @@ class LoginService:
         )
         
         if user is None:
-            raise ValueError("Invalid email or password.")
-        
+            raise AuthenticationFailed("Invalid email or password.")
+            
         refresh = RefreshToken.for_user(user)
 
         return {
