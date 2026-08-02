@@ -77,4 +77,4 @@ class LogoutService:
             
         except TokenError:
             
-            raise ValueError("Invalid or expired refresh token.")
+            raise AuthenticationFailed("Invalid or expired refresh token.")
