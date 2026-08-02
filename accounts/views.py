@@ -139,7 +139,7 @@ class ProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     @extend_schema(
-        tags=["User Profile"],
+        tags=["Authentication"],
         responses={
             200: OpenApiResponse(description="Profile retrieved successfully."),
             401: OpenApiResponse(description="Authentication failed."),
