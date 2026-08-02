@@ -78,3 +78,11 @@ class LogoutService:
         except TokenError:
             
             raise AuthenticationFailed("Invalid or expired refresh token.")
+        
+
+class ProfileService:
+
+    @staticmethod
+    def get_profile(user):
+        
+        return user
