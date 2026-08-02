@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, AuthenticationFailed
+from rest_framework.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -94,5 +95,25 @@ class ProfileService:
         user.last_name = validated_data.get("last_name", user.last_name)
         
         user.save(update_fields=["first_name", "last_name"])
+        
+        return user
+    
+
+class ChangePasswordService:
+
+    @staticmethod
+    def change_password(user, validated_data):
+        
+        old_password = validated_data["old_password"]
+        new_password = validated_data["new_password"]
+        
+        if not user.check_password(old_password):
+            raise AuthenticationFailed("Old password is incorrect.")
+        
+        if old_password == new_password:
+            raise ValidationError("New password cannot be the same as the old password.")
+        
+        user.set_password(new_password)
+        user.save(update_fields=["password"])
         
         return user
