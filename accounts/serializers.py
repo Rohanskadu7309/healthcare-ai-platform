@@ -52,3 +52,19 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id", "email", "first_name", "last_name"]
         read_only_fields = fields
+        
+        
+class UpdateProfileSerializer(serializers.ModelSerializer):
+    
+    first_name = serializers.CharField(required=False, allow_blank=True, max_length=100,)
+    last_name = serializers.CharField(required=False, allow_blank=True, max_length=100,)
+
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name"]
+        
+    def validate_first_name(self, value):
+        return value.strip()
+    
+    def validate_last_name(self, value):
+        return value.strip()
