@@ -5,8 +5,8 @@ from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 from common.responses import APIResponse
 
-from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer, LogoutSerializer, ProfileSerializer
-from .services import RegistrationService, LoginService, RefreshTokenService, LogoutService, ProfileService
+from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer, LogoutSerializer, ProfileSerializer, UpdateProfileSerializer, ChangePasswordSerializer
+from .services import RegistrationService, LoginService, RefreshTokenService, LogoutService, ProfileService, ChangePasswordService
 
 
 
@@ -145,7 +145,6 @@ class ProfileAPIView(APIView):
             401: OpenApiResponse(description="Authentication failed."),
         },
     )
-    
     def get(self, request):
         
         user = ProfileService.get_profile(request.user)
@@ -155,4 +154,52 @@ class ProfileAPIView(APIView):
         return APIResponse.success(
             message="Profile retrieved successfully.",
             data=serializer.data,
+        )
+        
+    @extend_schema(
+        tags=["Authentication"],
+        request=UpdateProfileSerializer,
+        responses={
+            200: OpenApiResponse(description="Profile updated successfully."),
+            400: OpenApiResponse(description="Validation error"),
+            401: OpenApiResponse(description="Authentication failed."),
+        },
+    )
+    def put(self, request):
+        
+        serializer = UpdateProfileSerializer(request.user, data=request.data, partial=True,)
+        serializer.is_valid(raise_exception=True)
+        
+        user = ProfileService.update_profile(request.user, serializer.validated_data)
+        
+        response_serializer = ProfileSerializer(user)
+
+        return APIResponse.success(
+            message="Profile updated successfully.",
+            data=response_serializer.data,
+        )
+        
+        
+class ChangePasswordAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        tags=["Authentication"],
+        request=ChangePasswordSerializer,
+        responses={
+            200: OpenApiResponse(description="Password changed successfully."),
+            400: OpenApiResponse(description="Validation error"),
+            401: OpenApiResponse(description="Authentication failed."),
+        },
+    )
+    def post(self, request):
+        
+        serializer = ChangePasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        ChangePasswordService.change_password(request.user, serializer.validated_data)
+        
+        return APIResponse.success(
+            message="Password changed successfully.",
         )
