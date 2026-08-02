@@ -1,7 +1,7 @@
 import re
 
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.contrib.auth.password_validation import validate_password
 
@@ -46,7 +46,10 @@ def validate_user_email(email):
     """
     Validate email format and uniqueness.
     """
-    validate_email(email)
+    try:
+        validate_email(email)
+    except Exception:
+        raise ValidationError("Enter a valid email address.")
 
     if User.objects.filter(email__iexact=email).exists():
         raise ValidationError("A user with this email already exists.")
@@ -56,7 +59,10 @@ def validate_user_password(password):
     """
     Validate password using Django's built-in validators.
     """
-    validate_password(password)
+    try:
+        validate_password(password)
+    except Exception as e:
+        raise ValidationError(e.messages)
     
 
 def validate_confirm_password(password, confirm_password):
