@@ -1,11 +1,12 @@
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 from common.responses import APIResponse
 
-from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer, LogoutSerializer
-from .services import RegistrationService, LoginService, RefreshTokenService, LogoutService
+from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer, LogoutSerializer, ProfileSerializer
+from .services import RegistrationService, LoginService, RefreshTokenService, LogoutService, ProfileService
 
 
 
@@ -130,4 +131,28 @@ class LogoutAPIView(APIView):
         
         return APIResponse.success(
             message="Logout successful.",
+        )
+        
+
+class ProfileAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        tags=["User Profile"],
+        responses={
+            200: OpenApiResponse(description="Profile retrieved successfully."),
+            401: OpenApiResponse(description="Authentication failed."),
+        },
+    )
+    
+    def get(self, request):
+        
+        user = ProfileService.get_profile(request.user)
+
+        serializer = ProfileSerializer(user)
+
+        return APIResponse.success(
+            message="Profile retrieved successfully.",
+            data=serializer.data,
         )
