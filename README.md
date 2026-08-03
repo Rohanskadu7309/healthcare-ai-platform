@@ -28,6 +28,13 @@ The project is being developed module-by-module following industry-standard soft
 
 ---
 
+### Common Components
+
+- ✔ Standard API Response
+- ✔ Global Exception Handler
+- ✔ Reusable Email Service
+- ✔ Reusable HTML Email Templates
+
 # 🚧 Upcoming Features
 
 ## Authentication
@@ -96,6 +103,13 @@ The project is being developed module-by-module following industry-standard soft
 - Swagger UI (drf-spectacular)
 - ReDoc
 - OpenAPI Schema
+
+### Email Services
+
+- Gmail SMTP
+- Django Email Backend
+- Reusable HTML Email Templates
+- Centralized Email Service
 
 ## Reports
 
@@ -197,6 +211,25 @@ healthcare-ai-platform/
 ├── manage.py
 ├── README.md
 └── requirements.txt
+```
+
+### Common Module
+
+```text
+common/
+├── email/
+│   ├── services.py
+│   ├── constants.py
+│   ├── utils.py
+│   └── templates/
+│       └── emails/
+│           ├── base_email.html
+│           ├── forgot_password.html
+│           ├── verify_email.html
+│           ├── welcome.html
+│           └── notification.html
+├── responses.py
+└── exception_handler.py
 ```
 
 ---
