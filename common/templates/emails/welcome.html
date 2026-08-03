@@ -1,0 +1,33 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+
+<p>
+
+Welcome {{ user_name }}!
+
+</p>
+
+<p>
+
+Your account has been successfully created.
+
+</p>
+
+<p>
+
+You can now log in and start using the Healthcare AI Platform.
+
+</p>
+
+<p style="text-align:center;">
+
+<a href="{{ login_url }}" class="button">
+
+Login
+
+</a>
+
+</p>
+
+{% endblock %}
