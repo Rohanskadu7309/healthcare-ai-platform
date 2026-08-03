@@ -1,58 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
+
+    <style>
+
+        body{
+            margin:0;
+            padding:0;
+            background:#f4f7fb;
+            font-family:Arial,Helvetica,sans-serif;
+        }
+
+        .container{
+            max-width:650px;
+            margin:40px auto;
+            background:#ffffff;
+            border-radius:12px;
+            overflow:hidden;
+            box-shadow:0 10px 30px rgba(0,0,0,.08);
+        }
+
+        .header{
+            background:#2563eb;
+            color:white;
+            text-align:center;
+            padding:30px;
+        }
+
+        .header h1{
+            margin:0;
+            font-size:28px;
+        }
+
+        .body{
+            padding:40px;
+            color:#333;
+            line-height:1.7;
+        }
+
+        .body h2{
+            margin-top:0;
+            color:#111827;
+        }
+
+        .button{
+            display:inline-block;
+            margin-top:25px;
+            padding:14px 32px;
+            background:#2563eb;
+            color:#ffffff !important;
+            text-decoration:none;
+            border-radius:8px;
+            font-weight:bold;
+        }
+
+        .footer{
+            background:#f9fafb;
+            text-align:center;
+            padding:25px;
+            font-size:13px;
+            color:#777;
+            border-top:1px solid #e5e7eb;
+        }
+
+        .warning{
+            margin-top:30px;
+            padding:18px;
+            background:#fff8e5;
+            border-left:5px solid #f59e0b;
+            border-radius:6px;
+        }
+
+    </style>
+
 </head>
 
-<body style="margin:0;padding:0;background:#f4f6f9;font-family:Arial,Helvetica,sans-serif;">
+<body>
 
-<table width="100%" cellpadding="0" cellspacing="0">
+<div class="container">
 
-<tr>
-<td align="center">
+<div class="header">
 
-<table width="650" cellpadding="0" cellspacing="0"
-style="background:#ffffff;margin-top:30px;border-radius:8px;overflow:hidden;">
+<h1>🏥 Healthcare AI Platform</h1>
 
-<tr>
-<td style="background:#2563eb;padding:25px;color:white;font-size:24px;font-weight:bold;">
+<p>Secure Healthcare Management System</p>
 
-🏥 Healthcare AI Platform
+</div>
 
-</td>
-</tr>
-
-<tr>
-<td style="padding:35px;">
+<div class="body">
 
 <h2>{{ title }}</h2>
 
 {% block content %}
 {% endblock %}
 
-</td>
-</tr>
+</div>
 
-<tr>
+<div class="footer">
 
-<td style="background:#f5f5f5;padding:20px;font-size:14px;color:#666;">
+<p>
 
-Regards,
-<br><br>
+© {% now "Y" %} Healthcare AI Platform
 
-<b>Healthcare AI Platform Team</b>
+</p>
 
-</td>
+<p>
 
-</tr>
+This is an automated email. Please do not reply.
 
-</table>
+</p>
 
-</td>
-</tr>
+</div>
 
-</table>
+</div>
 
 </body>
+
 </html>
