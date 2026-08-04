@@ -1,7 +1,12 @@
+from django.conf import settings
+from django.db import transaction
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, AuthenticationFailed
 from rest_framework.exceptions import ValidationError
+
+from common.email.services import EmailService
+from .models import PasswordResetRequest
 
 User = get_user_model()
 
@@ -117,3 +122,11 @@ class ChangePasswordService:
         user.save(update_fields=["password"])
         
         return user
+    
+
+class ForgotPasswordService:
+    
+    @staticmethod
+    def send_reset_email(validated_data):
+        
+        pass
