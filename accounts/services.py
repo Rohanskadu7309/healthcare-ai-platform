@@ -144,7 +144,7 @@ class ForgotPasswordService:
         EmailService.send_email(
             recipient=user.email,
             subject="Reset Your Password",
-            template="emails/password_reset.html",
+            template="emails/forgot_password.html",
             context={
                 "title": "Reset Password",
                 "user_name": user.first_name or user.email,
