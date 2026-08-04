@@ -138,7 +138,7 @@ class ForgotPasswordService:
             
             PasswordResetRequest.objects.filter(user=user, is_active=True).update(is_active=False)
             
-        reset_request = PasswordResetRequest.objects.create(user=user)
+            reset_request = PasswordResetRequest.objects.create(user=user)
             
         reset_url = f"{settings.FRONTEND_URL}/api/{API_VERSION}/auth/reset-password/?token={reset_request.token}"
             
