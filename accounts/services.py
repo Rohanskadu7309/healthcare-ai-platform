@@ -6,6 +6,7 @@ from rest_framework_simplejwt.exceptions import TokenError, AuthenticationFailed
 from rest_framework.exceptions import ValidationError
 
 from common.email.services import EmailService
+from common.constants import API_VERSION
 from .models import PasswordResetRequest
 
 User = get_user_model()
@@ -139,7 +140,7 @@ class ForgotPasswordService:
             
         reset_request = PasswordResetRequest.objects.create(user=user)
             
-        reset_url = f"{settings.FRONTEND_URL}/reset-password/?token={reset_request.token}"
+        reset_url = f"{settings.FRONTEND_URL}/api/{API_VERSION}/auth/reset-password/?token={reset_request.token}"
             
         EmailService.send_email(
             recipient=user.email,
