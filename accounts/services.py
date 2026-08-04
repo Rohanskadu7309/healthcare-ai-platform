@@ -137,4 +137,19 @@ class ForgotPasswordService:
             
             PasswordResetRequest.objects.filter(user=user, is_active=True).update(is_active=False)
             
-            reset_request = PasswordResetRequest.objects.create(user=user)
+        reset_request = PasswordResetRequest.objects.create(user=user)
+            
+        reset_url = f"{settings.FRONTEND_URL}/reset-password/?token={reset_request.token}"
+            
+        EmailService.send_email(
+            recipient=user.email,
+            subject="Reset Your Password",
+            template="emails/password_reset.html",
+            context={
+                "title": "Reset Password",
+                "user_name": user.first_name or user.email,
+                "reset_url": reset_url,
+            },
+        )
+        
+        return reset_request
