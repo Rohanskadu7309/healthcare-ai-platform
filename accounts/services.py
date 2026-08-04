@@ -129,4 +129,7 @@ class ForgotPasswordService:
     @staticmethod
     def send_reset_email(validated_data):
         
-        pass
+        email = validated_data["email"]
+        
+        user = User.objects.filter(email__iexact=email, is_active=True)
+        
