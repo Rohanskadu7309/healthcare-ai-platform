@@ -154,3 +154,11 @@ class ForgotPasswordService:
         )
         
         return reset_request
+    
+
+class ResetPasswordService:
+
+    @staticmethod
+    def reset_password(validated_data):
+
+        pass
