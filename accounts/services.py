@@ -133,3 +133,4 @@ class ForgotPasswordService:
         
         user = User.objects.filter(email__iexact=email, is_active=True)
         
+        PasswordResetRequest.objects.filter(user=user, is_active=True).update(is_active=False)
