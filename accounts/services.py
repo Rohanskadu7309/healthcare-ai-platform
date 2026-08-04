@@ -1,7 +1,13 @@
+from django.conf import settings
+from django.db import transaction
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, AuthenticationFailed
 from rest_framework.exceptions import ValidationError
+
+from common.email.services import EmailService
+from common.constants import API_VERSION
+from .models import PasswordResetRequest
 
 User = get_user_model()
 
@@ -117,3 +123,75 @@ class ChangePasswordService:
         user.save(update_fields=["password"])
         
         return user
+    
+
+class ForgotPasswordService:
+    
+    @staticmethod
+    def send_reset_email(validated_data):
+        
+        email = validated_data["email"]
+        
+        user = User.objects.get(email__iexact=email, is_active=True)
+        
+        with transaction.atomic():
+            
+            PasswordResetRequest.objects.filter(user=user, is_active=True).update(is_active=False)
+            
+            reset_request = PasswordResetRequest.objects.create(user=user)
+            
+        reset_url = f"{settings.FRONTEND_URL}/api/{API_VERSION}/auth/reset-password/?token={reset_request.token}"
+            
+        EmailService.send_email(
+            recipient=user.email,
+            subject="Reset Your Password",
+            template="emails/forgot_password.html",
+            context={
+                "title": "Reset Password",
+                "user_name": user.first_name or user.email,
+                "reset_url": reset_url,
+            },
+        )
+        
+        return reset_request
+    
+
+class ResetPasswordService:
+
+    @staticmethod
+    def reset_password(validated_data):
+
+        token = validated_data["token"]
+
+        reset_request = PasswordResetRequest.objects.filter(token=token, is_active=True).first()
+
+        if not reset_request:
+            
+            raise ValidationError(
+                "Invalid or expired reset link."
+            )
+
+        if reset_request.is_expired:
+
+            reset_request.is_active = False
+            reset_request.save(update_fields=["is_active"])
+
+            raise ValidationError(
+                "Password reset link has expired."
+            )
+
+        user = reset_request.user
+
+        with transaction.atomic():
+
+            user.set_password(
+                validated_data["new_password"]
+            )
+
+            user.save(update_fields=["password"])
+
+            reset_request.is_active = False
+
+            reset_request.save(
+                update_fields=["is_active"]
+            )
