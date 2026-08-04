@@ -172,3 +172,12 @@ class ResetPasswordService:
             raise ValidationError(
                 "Invalid or expired reset link."
             )
+        
+        if reset_request.is_expired:
+
+            reset_request.is_active = False
+            reset_request.save(update_fields=["is_active"])
+
+            raise ValidationError(
+                "Password reset link has expired."
+            )
