@@ -189,3 +189,9 @@ class ResetPasswordService:
         )
 
         user.save(update_fields=["password"])
+        
+        reset_request.is_active = False
+
+        reset_request.save(
+            update_fields=["is_active"]
+        )
