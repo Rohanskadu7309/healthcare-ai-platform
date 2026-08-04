@@ -163,16 +163,14 @@ class ResetPasswordService:
 
         token = validated_data["token"]
 
-        reset_request = PasswordResetRequest.objects.filter(
-            token=token,
-            is_active=True,
-        ).first()
+        reset_request = PasswordResetRequest.objects.filter(token=token, is_active=True).first()
 
         if not reset_request:
+            
             raise ValidationError(
                 "Invalid or expired reset link."
             )
-        
+
         if reset_request.is_expired:
 
             reset_request.is_active = False
@@ -181,21 +179,19 @@ class ResetPasswordService:
             raise ValidationError(
                 "Password reset link has expired."
             )
-        
+
         user = reset_request.user
 
-        user.set_password(
-            validated_data["new_password"]
-        )
+        with transaction.atomic():
 
-        user.save(update_fields=["password"])
-        
-        reset_request.is_active = False
+            user.set_password(
+                validated_data["new_password"]
+            )
 
-        reset_request.save(
-            update_fields=["is_active"]
-        )
-        
-        return {
-            "message": "Password reset successfully."
-        }
+            user.save(update_fields=["password"])
+
+            reset_request.is_active = False
+
+            reset_request.save(
+                update_fields=["is_active"]
+            )
