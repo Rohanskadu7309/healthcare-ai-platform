@@ -131,8 +131,10 @@ class ForgotPasswordService:
         
         email = validated_data["email"]
         
-        user = User.objects.filter(email__iexact=email, is_active=True)
+        user = User.objects.get(email__iexact=email, is_active=True)
         
         with transaction.atomic():
             
             PasswordResetRequest.objects.filter(user=user, is_active=True).update(is_active=False)
+            
+            reset_request = PasswordResetRequest.objects.create(user=user)
