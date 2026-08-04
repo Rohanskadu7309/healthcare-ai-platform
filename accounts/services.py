@@ -181,3 +181,11 @@ class ResetPasswordService:
             raise ValidationError(
                 "Password reset link has expired."
             )
+        
+        user = reset_request.user
+
+        user.set_password(
+            validated_data["new_password"]
+        )
+
+        user.save(update_fields=["password"])
