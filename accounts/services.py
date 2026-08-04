@@ -195,3 +195,7 @@ class ResetPasswordService:
         reset_request.save(
             update_fields=["is_active"]
         )
+        
+        return {
+            "message": "Password reset successfully."
+        }
