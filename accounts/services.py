@@ -161,4 +161,14 @@ class ResetPasswordService:
     @staticmethod
     def reset_password(validated_data):
 
-        pass
+        token = validated_data["token"]
+
+        reset_request = PasswordResetRequest.objects.filter(
+            token=token,
+            is_active=True,
+        ).first()
+
+        if not reset_request:
+            raise ValidationError(
+                "Invalid or expired reset link."
+            )
