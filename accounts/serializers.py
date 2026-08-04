@@ -111,3 +111,23 @@ class ForgotPasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError("If an account exists with this email, a password reset link has been sent.")
         
         return email
+    
+
+class ResetPasswordSerializer(serializers.Serializer):
+
+    token = serializers.CharField()
+    new_password = serializers.CharField(write_only=True, min_length=8)
+    confirm_new_password = serializers.CharField(write_only=True, min_length=8)
+
+    def validate_new_password(self, value):
+        validate_user_password(value)
+        
+        return value
+
+    def validate(self, attrs):
+        validate_confirm_password(
+            attrs["new_password"],
+            attrs["confirm_new_password"],
+        )
+
+        return attrs
