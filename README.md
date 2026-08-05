@@ -25,7 +25,8 @@ The project is being developed module-by-module following industry-standard soft
 - ✅ Get Profile
 - ✅ Update Profile
 - ✅ Change Password
-
+- ✅ Forgot Password
+- ✅ Reset Password
 ---
 
 ### Common Components
