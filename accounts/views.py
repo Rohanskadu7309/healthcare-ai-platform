@@ -1,12 +1,12 @@
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 from common.responses import APIResponse
 
-from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer, LogoutSerializer, ProfileSerializer, UpdateProfileSerializer, ChangePasswordSerializer
-from .services import RegistrationService, LoginService, RefreshTokenService, LogoutService, ProfileService, ChangePasswordService
+from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer, LogoutSerializer, ProfileSerializer, UpdateProfileSerializer, ChangePasswordSerializer, ForgotPasswordSerializer, ResetPasswordSerializer
+from .services import RegistrationService, LoginService, RefreshTokenService, LogoutService, ProfileService, ChangePasswordService, ForgotPasswordService, ResetPasswordService
 
 
 
@@ -202,4 +202,51 @@ class ChangePasswordAPIView(APIView):
         
         return APIResponse.success(
             message="Password changed successfully.",
+        )
+        
+    
+class ForgotPasswordAPIView(APIView):
+
+    permission_classes = [AllowAny]
+
+    @extend_schema(
+        tags=["Authentication"],
+        request=ForgotPasswordSerializer,
+    )
+    def post(self, request):
+
+        serializer = ForgotPasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        ForgotPasswordService.send_reset_email(
+            serializer.validated_data
+        )
+
+        return APIResponse.success(
+            message="Password reset link has been sent to your email.",
+        )
+        
+        
+class ResetPasswordAPIView(APIView):
+
+    permission_classes = [AllowAny]
+
+    @extend_schema(
+        tags=["Authentication"],
+        request=ResetPasswordSerializer,
+    )
+    def post(self, request):
+
+        serializer = ResetPasswordSerializer(
+            data=request.data
+        )
+
+        serializer.is_valid(raise_exception=True)
+
+        ResetPasswordService.reset_password(
+            serializer.validated_data
+        )
+
+        return APIResponse.success(
+            message="Password reset successfully.",
         )
