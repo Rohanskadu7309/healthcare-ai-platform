@@ -1,12 +1,12 @@
-from rest_framework import status
+from rest_framework import response, status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 from common.responses import APIResponse
 
-from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer, LogoutSerializer, ProfileSerializer, UpdateProfileSerializer, ChangePasswordSerializer, ForgotPasswordSerializer, ResetPasswordSerializer, EmailVerificationSerializer
-from .services import RegistrationService, LoginService, RefreshTokenService, LogoutService, ProfileService, ChangePasswordService, ForgotPasswordService, ResetPasswordService, EmailVerificationService
+from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer, LogoutSerializer, ProfileSerializer, UpdateProfileSerializer, ChangePasswordSerializer, ForgotPasswordSerializer, ResetPasswordSerializer, EmailVerificationSerializer, ResendVerificationEmailSerializer
+from .services import RegistrationService, LoginService, RefreshTokenService, LogoutService, ProfileService, ChangePasswordService, ForgotPasswordService, ResetPasswordService, EmailVerificationService, ResendVerificationEmailService
 
 
 
@@ -260,6 +260,26 @@ class EmailVerificationAPIView(APIView):
         
         response = EmailVerificationService.verify_email(serializer.validated_data)
         
+        return APIResponse.success(
+            message=response["message"],
+        )
+        
+
+class ResendVerificationEmailAPIView(APIView):
+
+    permission_classes = [AllowAny]
+
+    @extend_schema(
+        tags=["Authentication"],
+        request=ResendVerificationEmailSerializer,
+    )
+    def post(self, request):
+
+        serializer = ResendVerificationEmailSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        response = ResendVerificationEmailService.resend_verification_email(serializer.validated_data)
+
         return APIResponse.success(
             message=response["message"],
         )
