@@ -5,8 +5,8 @@ from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 from common.responses import APIResponse
 
-from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer, LogoutSerializer, ProfileSerializer, UpdateProfileSerializer, ChangePasswordSerializer, ForgotPasswordSerializer, ResetPasswordSerializer
-from .services import RegistrationService, LoginService, RefreshTokenService, LogoutService, ProfileService, ChangePasswordService, ForgotPasswordService, ResetPasswordService
+from .serializers import RegisterSerializer, LoginSerializer, RefreshTokenSerializer, LogoutSerializer, ProfileSerializer, UpdateProfileSerializer, ChangePasswordSerializer, ForgotPasswordSerializer, ResetPasswordSerializer, EmailVerificationSerializer
+from .services import RegistrationService, LoginService, RefreshTokenService, LogoutService, ProfileService, ChangePasswordService, ForgotPasswordService, ResetPasswordService, EmailVerificationService
 
 
 
@@ -218,9 +218,7 @@ class ForgotPasswordAPIView(APIView):
         serializer = ForgotPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        ForgotPasswordService.send_reset_email(
-            serializer.validated_data
-        )
+        ForgotPasswordService.send_reset_email(serializer.validated_data)
 
         return APIResponse.success(
             message="Password reset link has been sent to your email.",
@@ -237,16 +235,31 @@ class ResetPasswordAPIView(APIView):
     )
     def post(self, request):
 
-        serializer = ResetPasswordSerializer(
-            data=request.data
-        )
-
+        serializer = ResetPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        ResetPasswordService.reset_password(
-            serializer.validated_data
-        )
+        ResetPasswordService.reset_password(serializer.validated_data)
 
         return APIResponse.success(
             message="Password reset successfully.",
+        )
+        
+
+class EmailVerificationAPIView(APIView):
+
+    permission_classes = [AllowAny]
+
+    @extend_schema(
+        tags=["Authentication"],
+        request=EmailVerificationSerializer,
+    )
+    def post(self, request):
+
+        serializer = EmailVerificationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        response = EmailVerificationService.verify_email(serializer.validated_data)
+        
+        return APIResponse.success(
+            message=response["message"],
         )
