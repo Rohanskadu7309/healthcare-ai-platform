@@ -226,4 +226,34 @@ class EmailVerificationService:
     @staticmethod
     def verify_email(validated_data):
         
-        pass
+        token = validated_data["token"]
+        
+        verification = EmailVerification.objects.filter(token=token, is_active=True).first()
+        
+        if not verification:
+            
+            raise ValidationError(
+                "Invalid or expired email verification link."
+            )
+            
+        if verification.is_expired:
+            
+            verification.is_active = False
+            verification.save(update_fields=["is_active"])
+            
+            raise ValidationError(
+                "Email verification link has expired."
+            )
+            
+        user = verification.user
+        
+        user.is_email_verified = True
+        user.save(update_fields=["is_email_verified"])
+        
+        verification.is_active = False
+        verification.save(update_fields=["is_active"])
+        
+        return {
+            "message": "Email verified successfully.",
+        }
+        
