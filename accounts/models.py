@@ -66,3 +66,42 @@ class PasswordResetRequest(models.Model):
     def __str__(self):
         
         return f"{self.user.email}"
+    
+
+class EmailVerification(models.Model):
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="email_verifications")
+    token = models.CharField(max_length=128, unique=True, editable=False)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    
+    class Meta:
+        
+        ordering = ["-created_at"]
+        
+        indexes = [
+            models.Index(fields=["user", "token", "is_active"]),
+        ]
+        
+        verbose_name = "Email Verification"
+        verbose_name_plural = "Email Verifications"
+        
+    def save(self, *args, **kwargs):
+        
+        if not self.token:
+            self.token = secrets.token_urlsafe(48)
+            
+        if not self.expires_at:
+            self.expires_at = timezone.now() + timedelta(hours=24)
+            
+        super().save(*args, **kwargs)
+    
+    @property    
+    def is_expired(self):
+        
+        return timezone.now() > self.expires_at
+    
+    def __str__(self):
+        
+        return self.user.email
