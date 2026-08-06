@@ -8,13 +8,13 @@ A production-ready backend Healthcare Management Platform built using **Django**
 
 🚧 **Currently under active development.**
 
-The project is being developed module-by-module following industry-standard software development practices including feature branching, clean architecture, API documentation, testing, and production-ready coding standards.
+The project is being developed module-by-module following industry-standard software development practices including feature branching, clean architecture, reusable services, API documentation, testing, and production-ready coding standards.
 
 ---
 
 # 🚀 Features Implemented
 
-## Authentication
+## 🔐 Authentication
 
 - ✅ Custom User Model (Email Authentication)
 - ✅ User Registration
@@ -27,28 +27,33 @@ The project is being developed module-by-module following industry-standard soft
 - ✅ Change Password
 - ✅ Forgot Password
 - ✅ Reset Password
+- ✅ Email Verification
+- ✅ Resend Verification Email
+
 ---
 
-### Common Components
+## ⚙ Common Components
 
-- ✔ Standard API Response
-- ✔ Global Exception Handler
-- ✔ Reusable Email Service
-- ✔ Reusable HTML Email Templates
+- ✅ Standard API Response
+- ✅ Global Exception Handler
+- ✅ Reusable Email Service
+- ✅ Reusable HTML Email Templates
+- ✅ Custom Validators
+- ✅ Centralized Authentication Services
+
+---
 
 # 🚧 Upcoming Features
 
-## Authentication
+## 🔐 Authentication
 
-- ⏳ Forgot Password
-- ⏳ Reset Password
-- ⏳ Email Verification
 - ⏳ Two-Factor Authentication (TOTP)
 
-## Authorization
+## 👥 Authorization
 
 - ⏳ Role-Based Access Control (RBAC)
-- ⏳ Roles & Permissions
+- ⏳ Roles
+- ⏳ Permissions
 
 ---
 
@@ -69,7 +74,7 @@ The project is being developed module-by-module following industry-standard soft
 ## Backend
 
 - Python 3.12.10
-- Django 6.0.3
+- Django 6.x
 - Django REST Framework
 - PostgreSQL 17
 
@@ -77,6 +82,8 @@ The project is being developed module-by-module following industry-standard soft
 
 - JWT Authentication (Simple JWT)
 - Token Blacklisting
+- Email Verification
+- Password Reset via Email
 
 ## Data Processing
 
@@ -105,7 +112,7 @@ The project is being developed module-by-module following industry-standard soft
 - ReDoc
 - OpenAPI Schema
 
-### Email Services
+## Email Services
 
 - Gmail SMTP
 - Django Email Backend
@@ -136,9 +143,10 @@ The project is being developed module-by-module following industry-standard soft
 - ✅ Get Profile
 - ✅ Update Profile
 - ✅ Change Password
-- ⏳ Forgot Password
-- ⏳ Reset Password
-- ⏳ Email Verification
+- ✅ Forgot Password
+- ✅ Reset Password
+- ✅ Email Verification
+- ✅ Resend Verification Email
 - ⏳ Two-Factor Authentication (TOTP)
 
 ---
@@ -214,7 +222,7 @@ healthcare-ai-platform/
 └── requirements.txt
 ```
 
-### Common Module
+## Common Module
 
 ```text
 common/
@@ -278,9 +286,9 @@ feature/*
 Development workflow:
 
 - Create a feature branch from `develop`
-- Complete one feature
+- Implement one feature at a time
 - Test using Swagger and Postman
-- Merge into `develop`
+- Merge feature branch into `develop`
 - Merge stable releases into `master`
 
 ---
@@ -289,12 +297,12 @@ Development workflow:
 
 ## ✅ Phase 1 — Project Setup
 
-- Project Initialization
-- Virtual Environment
-- PostgreSQL Configuration
-- Django REST Framework
-- Swagger Documentation
-- Custom User Model
+- ✅ Project Initialization
+- ✅ Virtual Environment
+- ✅ PostgreSQL Configuration
+- ✅ Django REST Framework
+- ✅ Swagger Documentation
+- ✅ Custom User Model
 
 ---
 
@@ -308,49 +316,57 @@ Development workflow:
 - ✅ Get Profile
 - ✅ Update Profile
 - ✅ Change Password
-- ⏳ Forgot Password
-- ⏳ Reset Password
-- ⏳ Email Verification
-- ⏳ Two-Factor Authentication
+- ✅ Forgot Password
+- ✅ Reset Password
+- ✅ Email Verification
+- ✅ Resend Verification Email
+- ⏳ Two-Factor Authentication (TOTP)
+
+---
+
+## ⏳ Phase 3 — Authorization
+
 - ⏳ Role-Based Access Control (RBAC)
+- ⏳ Roles
+- ⏳ Permissions
 
 ---
 
-## ⏳ Phase 3 — Healthcare Modules
+## ⏳ Phase 4 — Healthcare Modules
 
-- Patient Management
-- Doctor Management
-- Appointment Scheduling
-- Medical Records
-- Prescription Management
-
----
-
-## ⏳ Phase 4 — Healthcare Analytics
-
-- Dashboard APIs
-- CSV Import
-- Healthcare Reports
-- Data Visualization
+- ⏳ Patient Management
+- ⏳ Doctor Management
+- ⏳ Appointment Scheduling
+- ⏳ Medical Records
+- ⏳ Prescription Management
 
 ---
 
-## ⏳ Phase 5 — Artificial Intelligence
+## ⏳ Phase 5 — Healthcare Analytics
 
-- Disease Prediction API
-- AI Medical Report Summary
-- AI Healthcare Assistant
+- ⏳ Dashboard APIs
+- ⏳ CSV Import
+- ⏳ Healthcare Reports
+- ⏳ Data Visualization
 
 ---
 
-## ⏳ Phase 6 — Deployment
+## ⏳ Phase 6 — Artificial Intelligence
 
-- Celery
-- Redis
-- Docker
-- Automated Testing
-- CI/CD
-- Cloud Deployment
+- ⏳ Disease Prediction API
+- ⏳ AI Medical Report Summary
+- ⏳ AI Healthcare Assistant
+
+---
+
+## ⏳ Phase 7 — Deployment
+
+- ⏳ Celery
+- ⏳ Redis
+- ⏳ Docker
+- ⏳ Automated Testing
+- ⏳ CI/CD
+- ⏳ Cloud Deployment
 
 ---
 
