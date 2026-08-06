@@ -195,3 +195,16 @@ class ResetPasswordService:
             reset_request.save(
                 update_fields=["is_active"]
             )
+            
+
+class EmailVerificationService:
+    
+    @staticmethod
+    def send_verification_email(user):
+        
+        pass
+    
+    @staticmethod
+    def verify_email(validated_data):
+        
+        pass

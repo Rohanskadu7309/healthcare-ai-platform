@@ -133,6 +133,6 @@ class ResetPasswordSerializer(serializers.Serializer):
         return attrs
     
 
-class VerifyEmailSerializer(serializers.Serializer):
+class EmailVerificationSerializer(serializers.Serializer):
     
     token = serializers.CharField()
