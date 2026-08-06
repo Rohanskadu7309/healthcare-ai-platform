@@ -7,7 +7,7 @@ from rest_framework.exceptions import ValidationError
 
 from common.email.services import EmailService
 from common.constants import API_VERSION
-from .models import PasswordResetRequest
+from .models import PasswordResetRequest, EmailVerification
 
 User = get_user_model()
 
@@ -202,7 +202,26 @@ class EmailVerificationService:
     @staticmethod
     def send_verification_email(user):
         
-        pass
+        with transaction.atomic():
+            
+            EmailVerification.objects.filter(user=user, is_active=True).update(is_active=False)
+            
+            verification = EmailVerification.objects.create(user=user)
+        
+        verification_url = f"{settings.FRONTEND_URL}/api/{API_VERSION}/auth/verify-email/?token={verification.token}"
+        
+        EmailService.send_email(
+            recipient=user.email,
+            subject="Verify Your Email Address",
+            template="emails/verify_email.html",
+            context={
+                "title": "Verify Email",
+                "user_name": user.first_name or user.email,
+                "verification_url": verification_url,
+            },
+        )
+        
+        return verification
     
     @staticmethod
     def verify_email(validated_data):
