@@ -14,6 +14,7 @@ class CustomUserAdmin(UserAdmin):
         "last_name",
         "is_staff",
         "is_active",
+        "is_email_verified",
     )
 
     search_fields = (
@@ -30,6 +31,7 @@ class CustomUserAdmin(UserAdmin):
                 "is_active",
                 "is_staff",
                 "is_superuser",
+                "is_email_verified",
                 "groups",
                 "user_permissions",
             )
@@ -47,6 +49,7 @@ class CustomUserAdmin(UserAdmin):
                     "password2",
                     "is_staff",
                     "is_active",
+                    "is_email_verified",
                 ),
             },
         ),
@@ -57,6 +60,7 @@ class CustomUserAdmin(UserAdmin):
 class PasswordResetRequestAdmin(admin.ModelAdmin):
 
     list_display = (
+        "token",
         "user",
         "is_active",
         "expires_at",
@@ -91,6 +95,7 @@ class PasswordResetRequestAdmin(admin.ModelAdmin):
 class EmailVerificationAdmin(admin.ModelAdmin):
 
     list_display = (
+        "token",
         "user",
         "is_active",
         "expires_at",
