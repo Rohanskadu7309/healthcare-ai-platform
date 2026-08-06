@@ -71,3 +71,17 @@ def validate_confirm_password(password, confirm_password):
     """
     if password != confirm_password:
         raise ValidationError("Passwords do not match.")
+    
+
+def validate_existing_active_user_email(email):
+    """
+    Validate that an active user exists with the given email.
+    """
+    user = User.objects.filter(email__iexact=email, is_active=True,).first()
+
+    if not user:
+        raise ValidationError(
+            "No active account found with this email."
+        )
+
+    return user

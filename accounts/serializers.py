@@ -136,3 +136,10 @@ class ResetPasswordSerializer(serializers.Serializer):
 class EmailVerificationSerializer(serializers.Serializer):
     
     token = serializers.CharField()
+    
+
+class ResendEmailVerificationSerializer(serializers.Serializer):
+    
+    email = serializers.EmailField()
+
+    def
