@@ -25,6 +25,8 @@ class RegistrationService:
             password=password,
             **validated_data,
         )
+        
+        EmailVerificationService.send_verification_email(user)
 
         return user
     
