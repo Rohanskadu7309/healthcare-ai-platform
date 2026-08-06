@@ -46,7 +46,10 @@ class LoginService:
         
         if user is None:
             raise AuthenticationFailed("Invalid email or password.")
-            
+        
+        if not user.is_email_verified:
+            raise AuthenticationFailed("Please verify your email before logging in.")
+                    
         refresh = RefreshToken.for_user(user)
 
         return {
