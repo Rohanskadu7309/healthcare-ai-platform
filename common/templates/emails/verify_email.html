@@ -3,24 +3,36 @@
 {% block content %}
 
 <p>
+    Welcome {{ user_name }}!
+</p>
 
-Welcome {{ user_name }}!
+<p>
+    Thank you for registering with <strong>Healthcare AI Platform</strong>.
+</p>
+
+<p>
+    Please verify your email address to activate your account.
+</p>
+
+<p style="text-align:center;">
+
+    <a href="{{ verification_url }}" class="button">
+
+        Verify Email
+
+    </a>
 
 </p>
 
 <p>
 
-Please verify your email address to activate your account.
+    This verification link will expire in <strong>24 hours</strong>.
 
 </p>
 
-<p style="text-align:center;">
+<p>
 
-<a href="{{ verify_url }}" class="button">
-
-Verify Email
-
-</a>
+    If you did not create this account, you can safely ignore this email.
 
 </p>
 

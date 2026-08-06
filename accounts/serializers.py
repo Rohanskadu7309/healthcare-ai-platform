@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import User
-from .validators import RegistrationValidator, validate_user_email, validate_user_password, validate_confirm_password
+from .validators import validate_user_email, validate_user_password, validate_confirm_password, validate_existing_active_user_email
 
 class RegisterSerializer(serializers.Serializer):
 
@@ -129,5 +129,33 @@ class ResetPasswordSerializer(serializers.Serializer):
             attrs["new_password"],
             attrs["confirm_new_password"],
         )
+
+        return attrs
+    
+
+class EmailVerificationSerializer(serializers.Serializer):
+    
+    token = serializers.CharField()
+    
+
+class ResendVerificationEmailSerializer(serializers.Serializer):
+
+    email = serializers.EmailField()
+
+    def validate(self, attrs):
+
+        email = attrs["email"].strip().lower()
+
+        user = validate_existing_active_user_email(email)
+
+        if user.is_email_verified:
+            raise serializers.ValidationError(
+                {
+                    "email": "Email is already verified."
+                }
+            )
+
+        attrs["email"] = email
+        attrs["user"] = user
 
         return attrs
