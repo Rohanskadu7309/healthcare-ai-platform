@@ -17,6 +17,7 @@ class RegisterAPIView(APIView):
     
     @extend_schema(
         tags=["Authentication"],
+        summary="Register a new user account",
         request=RegisterSerializer,
         responses={
             201: OpenApiResponse(description="User registered successfully."),
@@ -53,6 +54,7 @@ class LoginAPIView(APIView):
 
     @extend_schema(
         tags=["Authentication"],
+        summary="Authenticate user and generate JWT tokens",
         request=LoginSerializer,
         responses={
             200: OpenApiResponse(description="Login successful."),
@@ -88,6 +90,7 @@ class RefreshTokenAPIView(APIView):
     
     @extend_schema(
         tags=["Authentication"],
+        summary="Generate a new JWT access token",
         request=RefreshTokenSerializer,
         responses={
             200: OpenApiResponse(description="Access token refreshed successfully."),
@@ -115,6 +118,7 @@ class LogoutAPIView(APIView):
     
     @extend_schema(
         tags=["Authentication"],
+        summary="Logout user and blacklist refresh token",
         request=LogoutSerializer,
         responses={
             200: OpenApiResponse(description="Logout successful."),
@@ -140,6 +144,7 @@ class ProfileAPIView(APIView):
 
     @extend_schema(
         tags=["Authentication"],
+        summary="Retrieve authenticated user profile",
         responses={
             200: OpenApiResponse(description="Profile retrieved successfully."),
             401: OpenApiResponse(description="Authentication failed."),
@@ -158,6 +163,7 @@ class ProfileAPIView(APIView):
         
     @extend_schema(
         tags=["Authentication"],
+        summary="Update authenticated user profile",
         request=UpdateProfileSerializer,
         responses={
             200: OpenApiResponse(description="Profile updated successfully."),
@@ -186,6 +192,7 @@ class ChangePasswordAPIView(APIView):
 
     @extend_schema(
         tags=["Authentication"],
+        summary="Change authenticated user's password",
         request=ChangePasswordSerializer,
         responses={
             200: OpenApiResponse(description="Password changed successfully."),
@@ -211,6 +218,7 @@ class ForgotPasswordAPIView(APIView):
 
     @extend_schema(
         tags=["Authentication"],
+        summary="Send password reset email",
         request=ForgotPasswordSerializer,
     )
     def post(self, request):
@@ -231,6 +239,7 @@ class ResetPasswordAPIView(APIView):
 
     @extend_schema(
         tags=["Authentication"],
+        summary="Reset password using reset token",
         request=ResetPasswordSerializer,
     )
     def post(self, request):
@@ -251,6 +260,7 @@ class EmailVerificationAPIView(APIView):
 
     @extend_schema(
         tags=["Authentication"],
+        summary="User email verification using token",
         request=EmailVerificationSerializer,
     )
     def post(self, request):
@@ -271,6 +281,7 @@ class ResendVerificationEmailAPIView(APIView):
 
     @extend_schema(
         tags=["Authentication"],
+        summary="Resend email verification email",
         request=ResendVerificationEmailSerializer,
     )
     def post(self, request):
