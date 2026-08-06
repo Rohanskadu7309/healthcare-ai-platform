@@ -262,3 +262,16 @@ class EmailVerificationService:
             "message": "Email verified successfully.",
         }
         
+
+class ResendVerificationEmailService:
+    
+    @staticmethod
+    def resend_verification_email(validated_data):
+        
+        user = validated_data["user"]
+        
+        EmailVerificationService.send_verification_email(user)
+    
+        return {
+            "message": "Verification email resent successfully.",
+        }
