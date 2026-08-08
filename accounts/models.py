@@ -16,6 +16,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_email_verified = models.BooleanField(default=False)
+    role = models.ForeignKey("authorization.Role", on_delete=models.SET_NULL, null=True, blank=True, related_name="users")
     date_joined = models.DateTimeField(auto_now_add=True)
     objects = UserManager()
     USERNAME_FIELD = "email"
