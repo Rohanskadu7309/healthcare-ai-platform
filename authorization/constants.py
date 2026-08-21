@@ -98,3 +98,28 @@ ROLES = {
         ],
     },
 }
+
+VIEW_USERS = "view_users"
+CREATE_USERS = "create_users"
+UPDATE_USERS = "update_users"
+DELETE_USERS = "delete_users"
+
+VIEW_PATIENTS = "view_patients"
+CREATE_PATIENTS = "create_patients"
+UPDATE_PATIENTS = "update_patients"
+DELETE_PATIENTS = "delete_patients"
+
+VIEW_DOCTORS = "view_doctors"
+CREATE_DOCTORS = "create_doctors"
+UPDATE_DOCTORS = "update_doctors"
+DELETE_DOCTORS = "delete_doctors"
+
+VIEW_APPOINTMENTS = "view_appointments"
+CREATE_APPOINTMENTS = "create_appointments"
+UPDATE_APPOINTMENTS = "update_appointments"
+DELETE_APPOINTMENTS = "delete_appointments"
+
+VIEW_MEDICAL_RECORDS = "view_medical_records"
+CREATE_MEDICAL_RECORDS = "create_medical_records"
+UPDATE_MEDICAL_RECORDS = "update_medical_records"
+DELETE_MEDICAL_RECORDS = "delete_medical_records"
