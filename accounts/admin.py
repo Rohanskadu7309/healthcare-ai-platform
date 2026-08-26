@@ -6,6 +6,7 @@ from .models import User, PasswordResetRequest, EmailVerification
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
+    
     ordering = ("email",)
 
     list_display = (
